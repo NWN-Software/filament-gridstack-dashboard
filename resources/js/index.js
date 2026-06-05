@@ -1,6 +1,13 @@
 import {GridStack} from 'gridstack';
 
-export default function gridStackDashboard() {
+export default function gridStackDashboard({
+                                               columns = 12,
+                                               rows = 0,
+                                               float = true,
+                                               disableResize = false,
+                                               disableDrag = false,
+                                               resizable = 'se'
+                                           }) {
     return {
         grid: null,
         gridItems: this.$wire.entangle('gridItems'),
@@ -15,7 +22,15 @@ export default function gridStackDashboard() {
         init: function () {
             this.grid = GridStack.init({
                 cellHeight: 80,
+                column: columns,
+                row: rows,
+                float: float,
+                disableDrag: disableDrag,
+                disableResize: disableResize,
                 acceptWidgets: true,
+                resizable: {
+                    handles: resizable
+                },
                 removable: '#trash',
                 alwaysShowResizeHandle: true,
                 disableOneColumnMode: true,

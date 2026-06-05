@@ -1,6 +1,7 @@
-![invaders-xx-gridstack-dashboard](https://github.com/invaders-xx/filament-gridstack-dashboard/assets/604907/0dffac39-3daa-4788-99ec-abe85d126b4b)
+![invaders-xx-gridstack-dashboard](https://github.com/invaders-xx/filament-gridstack-dashboard/assets/604907/7b94f470-9e83-4cc5-95af-e5794db76feb)
 
 # Create and manage filament Dashboards using gridstack js
+
 <img width="1715" alt="image" src="https://github.com/invaders-xx/filament-gridstack-dashboard/assets/604907/cadb4346-d3fe-4749-ba6e-0e4eed2c9576">
 
 <img width="1715" alt="image" src="https://github.com/invaders-xx/filament-gridstack-dashboard/assets/604907/f41809b0-3ef0-4dd9-a894-ff199050ca2d">
@@ -22,10 +23,10 @@ You can install the package via composer:
 ```bash
 composer require invaders-xx/filament-gridstack-dashboard
 ```
+
 ```bash
 php artisan filament:assets
 ```
-
 
 > **Note: Add plugin Blade files to your custom theme `tailwind.config.js` for dark mode.**
 >
@@ -69,6 +70,8 @@ php artisan vendor:publish --tag="filament-gridstack-dashboard-views"
 
 ## Usage
 
+All functions used to configure the plugin can have a closure as argument.
+
 ```php
 use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
 
@@ -81,7 +84,37 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-you can configure the settings path (string in dotted format where to store in the settings)
+You can configure the number of columns of the grid. Default is 12.
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->columns(3),
+        ])
+}
+```
+
+You can configure the number of rows of the grid. Default is 0 (no constraint).
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->rows(3),
+        ])
+}
+```
+
+You can configure the settings path (string in dotted format where to store in the settings)
 By default the path is 'dashboard.layout'
 
 ```php
@@ -91,7 +124,124 @@ public function panel(Panel $panel): Panel
 {
     return $panel
         ->plugins([
-            GridstackDashboardPlugin::make()->settingsPath('dashboard.settings'),
+            GridstackDashboardPlugin::make()
+                ->settingsPath('dashboard.settings'),
+        ])
+}
+```
+
+You can enable/disable floating widgets (default: true).
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->float(false),
+        ])
+}
+```
+
+You can enable/disable dragging widgets (default: false).
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->disableDrag(true),
+        ])
+}
+```
+
+You can enable/disable resizing widgets (default: false).
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->disableResize(true),
+        ])
+}
+```
+
+You can specify resizing handles position of widgets. It can be any combination of n,ne,e,se,s,sw,w,nw or all (
+default: 'se').
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->resizable('all'),
+        ])
+}
+```
+
+You can configure the navigationIcon, the navigationGroup, the navigationLabel, the navigationSort, canAccess and
+shouldRegisterNavigation
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->navigationIcon('heroicon-o-chart-bar')
+                ->navigationGroup('Admin')
+                ->shouldRegisterNavigation(false)
+                ->canAccess(fn() => auth()->id()===1)
+                ->navigationLabel('Dashboard')
+                ->navigationSort(1),
+        ])
+}
+```
+
+You can configure a default grid using defaultGrid() function. This function has an array as parameter. This array
+should have the following format:
+
+```php
+[
+    'widget' => AccountWidget::class, // Widget class
+    'x' => 0, // starting column on the grid
+    'y' => 0, // row on the grid
+    'w' => 12, // number of columns on the grid
+]
+```
+
+FYI, a 12 columns grid, x goes from 0 to 11
+
+```php
+use InvadersXX\FilamentGridstackDashboard\GridstackDashboardPlugin;
+use Filament\Widgets\AccountWidget;
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GridstackDashboardPlugin::make()
+                ->defaultGrid([
+                    [
+                        'widget' => AccountWidget::class,
+                        'x' => 0,
+                        'y' => 0,
+                        'w' => 12,
+                    ],
+                ]),
         ])
 }
 ```
