@@ -43,7 +43,7 @@
                             id="trash"
                             class="border-danger-500 bg-danger-500 flex items-center border p-6 text-center"
                     >
-                        <x-heroicon-o-trash class="mr-2 h-8 w-8 text-white"/>
+                        <x-filament::icon icon="heroicon-o-trash" class="mr-2 h-8 w-8 text-white" />
                         <span class="text-white">{{ __('filament-gridstack-dashboard::component.trash_zone') }}</span>
                     </div>
                     <div class="mb-4 mt-4 bg-gray-500 dark:bg-white"></div>
